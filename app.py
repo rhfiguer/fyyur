@@ -78,7 +78,7 @@ def venues():
   # TODO : replace with real venues data.
   #       num_shows should be aggregated based on number of upcoming shows per venue.
 
-  #We group venues by city and state
+  #We group venues by city and state. Source for this code was Juliano V in Udacity Technincal Support: https://knowledge.udacity.com/questions/501471 
   locals = []
   venues = Venue.query.all()
   places = Venue.query.distinct(Venue.city, Venue.state).all()
@@ -125,8 +125,8 @@ def search_venues():
   # search for "Music" should return "The Musical Hop" and "Park Square Live Music & Coffee"
   
   search_term = request.form.get('search_term', ' ')
-  search = "%{0}%".format(search_term) #Partial string search
-  response = Venue.query.filter(Venue.name.ilike(search)).all() # Case insensitive
+  search = "%{0}%".format(search_term) #Partial string search. One of teh sources for this code was: https://stackoverflow.com/questions/14971619/proper-use-of-mysql-full-text-search-with-sqlalchemy
+  response = Venue.query.filter(Venue.name.ilike(search)).all() # Case insensitive. I googled how to query for text case insesnsitive and found ilike.
   counts = Venue.query.filter(Venue.name.ilike(search)).count() #Counting responses
 
 
@@ -337,8 +337,8 @@ def search_artists():
   # seach for "A" should return "Guns N Petals", "Matt Quevado", and "The Wild Sax Band".
   # search for "band" should return "The Wild Sax Band".
   search_term = request.form.get('search_term', ' ')
-  search = "%{0}%".format(search_term) #Partial string search
-  response = Artist.query.filter(Artist.name.ilike(search)).all() # Case insensitive
+  search = "%{0}%".format(search_term) #Partial string search. One of teh sources for this code was: https://stackoverflow.com/questions/14971619/proper-use-of-mysql-full-text-search-with-sqlalchemy
+  response = Artist.query.filter(Artist.name.ilike(search)).all() # Case insensitive. I googled how to query for text case insesnsitive and found ilike.
   counts = Artist.query.filter(Artist.name.ilike(search)).count() #Counting responses
 
 
@@ -526,9 +526,6 @@ def edit_artist_submission(artist_id):
 
 
 
-
-
-
   return redirect(url_for('show_artist', artist=data))
 
 @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
@@ -666,8 +663,8 @@ def shows():
   # TODO: replace with real venues data.
   #       num_shows should be aggregated based on number of upcoming shows per venue.
   
-  shows = Show.query.all()
-  data = []
+  shows = Show.query.all() 
+  data = [] #Source for append solution was Ahmed Sharshar on Fyyur project: https://github.com/mahmoud-sharshar/Fyyur-Artist-Booking-Site/blob/master/app.py
   for show in shows:
     data.append({
       "start_time": str(show.start_time),
