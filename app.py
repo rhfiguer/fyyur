@@ -18,7 +18,7 @@ from datetime import datetime
 import datetime
 
 
-from models import app, db, Venue, Artist, Show
+from models import app, db, Venue, Artist, Show  # Olouge E mentor mentioned this to connect models.py to app.py: https://knowledge.udacity.com/questions/89940
 
 
 db.init_app(app)
@@ -35,7 +35,6 @@ app.config.from_object('config')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-#app.config['WHOOSH_BASE'] = 'whoosh'
 
 # TODO [!! DONE    ]: connect to a local postgresql database
 
