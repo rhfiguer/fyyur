@@ -75,10 +75,23 @@ def index():
 
 @app.route('/venues')
 def venues():
-  # TODO [11DONE. FALTA INCLUIR LOS SHOWS QUE VIENEN]: replace with real venues data.
+  # TODO : replace with real venues data.
   #       num_shows should be aggregated based on number of upcoming shows per venue.
 
-  data = Venue.query.all()
+  #We group venues by city and state
+  locals = []
+  venues = Venue.query.all()
+  places = Venue.query.distinct(Venue.city, Venue.state).all()
+  for place in places:
+    locals.append({
+      'city':place.city,
+      'state': place.state,
+      'venues':[{
+        'id':venue.id,
+        'name':venue.name
+      } for venue in venues if venue.city ==place.city and venue.state ==place.state
+      ]
+    })
 
  #data=[{
  #  "city": "San Francisco",
@@ -103,8 +116,7 @@ def venues():
  #}]
   
   
-  #return render_template('pages/venues.html', areas=data);
-  return render_template('pages/venues.html', venues=data)
+  return render_template('pages/venues.html', areas=locals)
 
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
@@ -213,7 +225,8 @@ def show_venue(venue_id):
     "upcoming_shows_count": 1,
   }
   #data = list(filter(lambda d: d['id'] == venue_id, [data1, data2, data3]))[0]
-  venue = Venue.query.filter_by(id=venue_id).first_or_404()
+  
+  venue = Venue.query.filter_by(id=venue_id).first()
   data = {
             'id': venue.id,
             'name': venue.name,
@@ -278,7 +291,6 @@ def create_venue_submission():
   
   return render_template('pages/home.html')
 
-# STILL FACING TROUBLES W/ SEEKING DESCRIP & TALENT
 
  ## TODO: [DONE!!!] on unsuccessful db insert, flash an error instead.
 ##e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
